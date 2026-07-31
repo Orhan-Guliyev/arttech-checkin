@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Система Чек-ин / Чек-аут</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="auth-section" class="container">
+        <h2>Вход в систему</h2>
+        <input type="email" id="email" placeholder="Email (например, worker1@company.com)" value="worker1@company.com">
+        <input type="password" id="password" placeholder="Пароль" value="Pass12345">
+        <button id="login-btn">Войти</button>
+        <p id="auth-error" class="error"></p>
+    </div>
+
+    <div id="app-section" class="container hidden">
+        <header>
+            <div class="user-info-header">
+                <h2><span id="user-display"></span></h2>
+                <span id="user-status-badge" class="status-badge status-off">Не на работе</span>
+            </div>
+            <button id="logout-btn" class="secondary">Выйти</button>
+        </header>
+
+        <div id="worker-panel" class="hidden">
+            <div class="action-card">
+                <button id="toggle-work-btn" class="btn-checkin">Загрузка...</button>
+                <p id="geo-status" class="status-text"></p>
+            </div>
+
+            <h3>Статистика отработанного времени</h3>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h4>За эту неделю</h4>
+                    <span id="worker-week-time">0 ч 0 мин</span>
+                </div>
+                <div class="stat-card">
+                    <h4>За этот месяц</h4>
+                    <span id="worker-month-time">0 ч 0 мин</span>
+                </div>
+                <div class="stat-card">
+                    <h4>Всего в истории</h4>
+                    <span id="worker-total-time">0 ч 0 мин</span>
+                </div>
+            </div>
+            
+            <h3>Карта смены</h3>
+            <div id="worker-map" class="map-container"></div>
+
+            <div class="table-header-actions">
+                <h3>Моя история смен</h3>
+                <div class="export-buttons">
+                    <button class="btn-export" onclick="exportWorkerCSV()">CSV</button>
+                    <button class="btn-export btn-excel" onclick="exportWorkerExcel()">Excel</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Чек-ин / Чек-аут</th>
+                            <th>Отработано</th>
+                            <th>Координаты (Ш / Д)</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="boss-panel" class="hidden">
+            <div class="filter-section">
+                <label for="boss-filter">Фильтр по сотруднику:</label>
+                <select id="boss-filter">
+                    <option value="all">Все сотрудники</option>
+                    <option value="worker1@company.com">Worker 1</option>
+                    <option value="worker2@company.com">Worker 2</option>
+                    <option value="worker3@company.com">Worker 3</option>
+                </select>
+            </div>
+
+            <h3>Общая статистика отработанного времени</h3>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h4>За эту неделю</h4>
+                    <span id="boss-week-time">0 ч 0 мин</span>
+                </div>
+                <div class="stat-card">
+                    <h4>За этот месяц</h4>
+                    <span id="boss-month-time">0 ч 0 мин</span>
+                </div>
+                <div class="stat-card">
+                    <h4>За всё время</h4>
+                    <span id="boss-total-time">0 ч 0 мин</span>
+                </div>
+            </div>
+
+            <h3>Карта выбранной смены</h3>
+            <div id="boss-map" class="map-container"></div>
+
+            <div class="table-header-actions">
+                <h3>Логи смен</h3>
+                <div class="export-buttons">
+                    <button class="btn-export" onclick="exportBossCSV()">CSV</button>
+                    <button class="btn-export btn-excel" onclick="exportBossExcel()">Excel</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="boss-table">
+                    <thead>
+                        <tr>
+                            <th>Сотрудник</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                            <th>Приход / Уход</th>
+                            <th>Отработано</th>
+                            <th>Координаты (Ш / Д)</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
