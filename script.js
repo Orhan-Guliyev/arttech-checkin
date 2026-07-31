@@ -484,11 +484,11 @@ function renderTable(data, tableId, showEmail, mapType) {
         }
         
         html += `
-            <td><b>Приход:</b> ${checkInStr}<br><b>Уход:</b> ${checkOutStr}</td>
+            <td><b>Чек-ин:</b> ${checkInStr}<br><b>Чек-аут:</b> ${checkOutStr}</td>
             <td>${durationStr}</td>
             <td class="coord-text">
-                <b>Вход:</b> ${inCoords}<br>
-                <b>Выход:</b> ${outCoords}
+                <b>Чек-ин:</b> ${inCoords}<br>
+                <b>Чек-аут:</b> ${outCoords}
             </td>
             <td>
                 ${hasCoords 
